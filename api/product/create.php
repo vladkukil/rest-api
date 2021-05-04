@@ -13,7 +13,7 @@ include_once '../config/database.php';
 include_once '../objects/product.php';
 
 // Database creation and connection
-$database =new Database();
+$database = new Database();
 
 // Blog post object
 $product = new Product($database);
