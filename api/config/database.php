@@ -1,6 +1,7 @@
 <?php
 
 class Database {
+    //Data for DB connection
     private $host = 'localhost';
     private $db_name = 'rest_api_DB';
     private $username = 'root';
