@@ -11,7 +11,9 @@ include_once '../objects/product.php';
 
 $database = new Database();
 
-$product = new Product($database);
+$db = $database->getConnection();
+
+$product = new Product($db);
 
 //set ID of record for read
 $product->id = $_GET['id'] ?? die();

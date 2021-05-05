@@ -8,7 +8,9 @@ include_once '../objects/product.php';
 
 $database = new Database();
 
-$product = new Product($database);
+$db = $database->getConnection();
+
+$product = new Product($db);
 
 //querying products
 $stmt = $product->read();

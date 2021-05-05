@@ -1,12 +1,9 @@
 <?php
-/**
- * @OA\Info(title="My API Test", version="0.1")
- */
 
 class Product {
     // Connect to DB
     private $conn;
-    private $table_name = 'products';
+    private $table_name = "products";
 
     //Properties of obj
     public $id;
@@ -20,26 +17,11 @@ class Product {
     public function __construct($db) {
         $this->conn = $db;
     }
-    /**
-     * @OA\Get(path="/rest-php/api/product/read.php",
-     * @OA\Response(response="200", description="Success"),
-     * @OA\Response(response="404", description="Not Found"),
-     * )
-     */
 
     public function read(){
         //Select all records
-        $query = "SELECT
-                c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
-            FROM
-                " . $this->table_name . " p
-                LEFT JOIN
-                    categories c
-                        ON p.category_id = c.id
-            ORDER BY
-                p.created DESC";
+        $query = "SELECT * FROM " . $this->table_name;
 
-        //Prepared query
         $stmt = $this->conn->prepare($query);
 
         //Execute query
@@ -51,8 +33,7 @@ class Product {
     //Create method
     public function create() {
         //Insert query
-        $query = "INSERT INTO " . $this->table_name . "SET name=:name, price=:price, description=:description, 
-        category_id=:category_id, created=:created";
+        $query = "INSERT INTO " . $this->table_name . " SET name=:name, price=:price, description=:description, category_id=:category_id, created=:created";
 
         //Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -79,8 +60,9 @@ class Product {
         return false;
     }
 
+
     public function readOne() {
-        $query = "SELECT * FROM " . $this->table . " WHERE id = ? LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare($query);
 
@@ -97,7 +79,9 @@ class Product {
         $this->category_name = $row['category_name'];
     }
 
-    public function update(){
+    function update(){
+
+        // update query
         $query = "UPDATE
                 " . $this->table_name . "
             SET
@@ -108,24 +92,28 @@ class Product {
             WHERE
                 id = :id";
 
+        // prepare query statement
         $stmt = $this->conn->prepare($query);
 
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->price = htmlspecialchars(strip_tags($this->price));
-        $this->description = htmlspecialchars(strip_tags($this->description));
-        $this->category_id = htmlspecialchars(strip_tags($this->category_id));
-        $this->id = htmlspecialchars(strip_tags($this->id));
+        // sanitize
+        $this->name=htmlspecialchars(strip_tags($this->name));
+        $this->price=htmlspecialchars(strip_tags($this->price));
+        $this->description=htmlspecialchars(strip_tags($this->description));
+        $this->category_id=htmlspecialchars(strip_tags($this->category_id));
+        $this->id=htmlspecialchars(strip_tags($this->id));
 
+        // bind new values
         $stmt->bindParam(':name', $this->name);
-        $stmt->bindParm(':price', $this->price);
+        $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':category_id', $this->category_id);
         $stmt->bindParam(':id', $this->id);
 
-        if ($stmt->execute()){
+        // execute the query
+        if($stmt->execute()){
             return true;
         }
-        printf('Error: %s.\n', $stmt->error);
+
         return false;
     }
 

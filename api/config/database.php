@@ -9,9 +9,6 @@ class Database {
     private $charset = 'utf8';
     public $conn;
 
-    public function __construct() {
-        $this->getConnection();
-    }
 
     public function getConnection() {
         $this->conn = null;
@@ -28,3 +25,4 @@ class Database {
         return $this->conn;
     }
 }
+

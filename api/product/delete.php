@@ -11,15 +11,15 @@ include_once '../config/database.php';
 include_once '../objects/product.php';
 // Database creation and connection
 $database = new Database();
+$db = $database->getConnection();
 
 // Product object
-$product = new Product($database);
+$product = new Product($db);
 
 // get ID
-$data = json_decode(file_get_contents("php://input"));
 
 // Set ID for delete
-$product->id = $data->id;
+$product->id = $_GET['id'] ?? die();
 
 if ($product->delete()){
     //Response code 200

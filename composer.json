@@ -1,5 +1,6 @@
 {
     "require": {
-        "zircote/swagger-php": "^3.1"
+        "ext-pdo": "^7.2",
+        "ext-json": "^1.6"
     }
 }
